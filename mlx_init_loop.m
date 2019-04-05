@@ -13,16 +13,16 @@
 
 void	do_loop_hook2(CFRunLoopTimerRef observer, void * info)
 {
-  ((t_mlx_ptr_t *)info)->loop_hook(((t_mlx_ptr_t *)info)->loop_hook_data);
+  ((mlx_ptr_t *)info)->loop_hook(((mlx_ptr_t *)info)->loop_hook_data);
 }
 
 
 void do_loop_flush(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void * info)
 {
-  t_mlx_ptr_t	*mlx_ptr;
-  t_mlx_win_list_t *win;
+  mlx_ptr_t	*mlx_ptr;
+  mlx_win_list_t *win;
 
-  mlx_ptr = (t_mlx_ptr_t *)info;
+  mlx_ptr = (mlx_ptr_t *)info;
   win = mlx_ptr->win_list;
   while (win)
     {
@@ -42,7 +42,7 @@ void do_loop_flush(CFRunLoopObserverRef observer, CFRunLoopActivity activity, vo
 
 void *mlx_init()
 {
-  t_mlx_ptr_t	*new_mlx;
+  mlx_ptr_t	*new_mlx;
   int		bidon;
   int		i;
 
@@ -89,7 +89,7 @@ void *mlx_init()
 }
 
 
-void mlx_loop(t_mlx_ptr_t *mlx_ptr)
+void mlx_loop(mlx_ptr_t *mlx_ptr)
 {
   CFRunLoopObserverRef observer;
   CFRunLoopObserverContext ocontext = {.version = 0, .info = mlx_ptr, .retain = NULL, .release = NULL, .copyDescription = NULL};
@@ -105,7 +105,7 @@ void mlx_loop(t_mlx_ptr_t *mlx_ptr)
 }
 
 
-void mlx_pixel_put(t_mlx_ptr_t *mlx_ptr, t_mlx_win_list_t *win_ptr, int x, int y, int color)
+void mlx_pixel_put(mlx_ptr_t *mlx_ptr, mlx_win_list_t *win_ptr, int x, int y, int color)
 {
   if (!win_ptr->pixmgt)
     return ;
@@ -123,7 +123,7 @@ void	mlx_int_loop_once()
   thedate = [NSDate dateWithTimeIntervalSinceNow:0.1];
   while (42)
     {
-      event = [NSApp nextEventMatchingMask:NSEventMaskAny
+      event = [NSApp nextEventMatchingMask:NSAnyEventMask
 		     untilDate:thedate
 		     inMode:NSDefaultRunLoopMode
 		     dequeue:YES];
@@ -138,9 +138,9 @@ void	mlx_int_loop_once()
 }
 
 
-int     mlx_do_sync(t_mlx_ptr_t *mlx_ptr)
+int     mlx_do_sync(mlx_ptr_t *mlx_ptr)
 {
-  t_mlx_win_list_t *win;
+  mlx_win_list_t *win;
 
   win = mlx_ptr->win_list;
   while (win)
@@ -159,7 +159,7 @@ int     mlx_do_sync(t_mlx_ptr_t *mlx_ptr)
 }
 
 
-int mlx_loop_hook(t_mlx_ptr_t *mlx_ptr, void (*fct)(void *), void *param)
+int mlx_loop_hook(mlx_ptr_t *mlx_ptr, void (*fct)(void *), void *param)
 {
   CFRunLoopTimerContext	tcontext = {0, mlx_ptr, NULL, NULL, NULL};
   CFRunLoopTimerRef	timer;

@@ -3,7 +3,6 @@
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/gl3.h>
 #import <AppKit/NSOpenGLView.h>
-#import <Foundation/Foundation.h>
 
 #include <stdio.h>
 
@@ -31,17 +30,17 @@ static const GLfloat pixel_vertexes[8] =
 int get_mouse_button(NSEventType eventtype)
 {
   switch (eventtype) {
-  case NSEventTypeLeftMouseDown:
-  case NSEventTypeLeftMouseUp:
-  case NSEventTypeLeftMouseDragged:
+  case NSLeftMouseDown:
+  case NSLeftMouseUp:
+  case NSLeftMouseDragged:
     return 1;
-  case NSEventTypeRightMouseDown:
-  case NSEventTypeRightMouseUp:
-  case NSEventTypeRightMouseDragged:
+  case NSRightMouseDown:
+  case NSRightMouseUp:
+  case NSRightMouseDragged:
     return 2;
-  case NSEventTypeOtherMouseDown:
-  case NSEventTypeOtherMouseUp:
-  case NSEventTypeOtherMouseDragged:
+  case NSOtherMouseDown:
+  case NSOtherMouseUp:
+  case NSOtherMouseDragged:
     return 3;
   default:
     return 0;
@@ -80,7 +79,7 @@ int get_mouse_button(NSEventType eventtype)
 }
 
 
-- (void) setEvent:(int)event andFunc:(t_func_t)func andParam:(void *)param
+- (void) setEvent:(int)event andFunc:(func_t)func andParam:(void *)param
 {
   event_funct[event] = func;
   event_param[event] = param;
@@ -344,7 +343,7 @@ int get_mouse_button(NSEventType eventtype)
 
   if ((self = [super initWithFrame:rect pixelFormat:pixFmt]) != nil)
     {
-      NSUInteger windowStyle = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable;
+      NSUInteger windowStyle = NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask;
 
       win = [[NSWindowEvent alloc] initWithContentRect:rect
 				   styleMask:windowStyle
@@ -522,7 +521,7 @@ int get_mouse_button(NSEventType eventtype)
   [self release];
 }
 
-- (void) setEvent:(int)event andFunc:(t_func_t)func andParam:(void *)param
+- (void) setEvent:(int)event andFunc:(func_t)func andParam:(void *)param
 {
   [win setEvent:event andFunc:func andParam:param];
 }
@@ -538,7 +537,7 @@ int get_mouse_button(NSEventType eventtype)
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
-- (void) mlx_gl_draw_img:(t_mlx_img_list_t *)img andCtx:(t_mlx_img_ctx_t *)imgctx andX:(int)x andY:(int)y
+- (void) mlx_gl_draw_img:(mlx_img_list_t *)img andCtx:(mlx_img_ctx_t *)imgctx andX:(int)x andY:(int)y
 {
 
   if (pixel_nb >0)
@@ -568,7 +567,7 @@ int get_mouse_button(NSEventType eventtype)
 }
 
 
-- (void) mlx_gl_draw_font:(t_mlx_img_list_t *)img andCtx:(t_mlx_img_ctx_t *)imgctx andX:(int)x andY:(int)y andColor:(int)color glyphX:(int)gx glyphY:(int)gy
+- (void) mlx_gl_draw_font:(mlx_img_list_t *)img andCtx:(mlx_img_ctx_t *)imgctx andX:(int)x andY:(int)y andColor:(int)color glyphX:(int)gx glyphY:(int)gy
 {
   GLfloat color_tab[4];
 
@@ -615,7 +614,7 @@ int get_mouse_button(NSEventType eventtype)
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, pixel_vbuffer);
   glUniform1i(glsl.loc_pixel_texture, 0);
-
+  
   glBindBuffer(GL_ARRAY_BUFFER, pixel_vbuffer);
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), (void*)0);
   glEnableVertexAttribArray(0);
@@ -631,18 +630,18 @@ int get_mouse_button(NSEventType eventtype)
   while (pixel_nb--) pixtexbuff[pixel_nb] = 0xFF000000;
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size_x, size_y, 0, GL_BGRA, GL_UNSIGNED_BYTE, pixtexbuff);
   pixel_nb = 0;
-
+  
 }
 
 @end
 
 
 // mlx API
+ 
 
-
-void *mlx_new_window(t_mlx_ptr_t *mlx_ptr, int size_x, int size_y, char *title)
+void *mlx_new_window(mlx_ptr_t *mlx_ptr, int size_x, int size_y, char *title)
 {
-  t_mlx_win_list_t	*newwin;
+  mlx_win_list_t	*newwin;
   NSString		*str;
 
   if ((newwin = malloc(sizeof(*newwin))) == NULL)
@@ -666,7 +665,7 @@ void *mlx_new_window(t_mlx_ptr_t *mlx_ptr, int size_x, int size_y, char *title)
 }
 
 
-void mlx_clear_window(t_mlx_ptr_t *mlx_ptr, t_mlx_win_list_t *win_ptr)
+void mlx_clear_window(mlx_ptr_t *mlx_ptr, mlx_win_list_t *win_ptr)
 {
   [(id)(win_ptr->winid) selectGLContext];
   [(id)(win_ptr->winid) clearWin];
@@ -674,29 +673,29 @@ void mlx_clear_window(t_mlx_ptr_t *mlx_ptr, t_mlx_win_list_t *win_ptr)
 }
 
 
-void mlx_expose_hook(t_mlx_win_list_t *win_ptr, int (*funct_ptr)(), void *param)
+void mlx_expose_hook(mlx_win_list_t *win_ptr, int (*funct_ptr)(), void *param)
 {
   [(id)(win_ptr->winid) setEvent:12 andFunc:funct_ptr andParam:param];
 }
 
-void mlx_key_hook(t_mlx_win_list_t *win_ptr, int (*funct_ptr)(), void *param)
+void mlx_key_hook(mlx_win_list_t *win_ptr, int (*funct_ptr)(), void *param)
 {
   [(id)(win_ptr->winid) setEvent:3 andFunc:funct_ptr andParam:param];
 }
 
-void mlx_mouse_hook(t_mlx_win_list_t *win_ptr, int (*funct_ptr)(), void *param)
+void mlx_mouse_hook(mlx_win_list_t *win_ptr, int (*funct_ptr)(), void *param)
 {
   [(id)(win_ptr->winid) setEvent:4 andFunc:funct_ptr andParam:param];
 }
 
-void mlx_hook(t_mlx_win_list_t *win_ptr, int x_event, int x_mask, int (*funct_ptr)(), void *param)
+void mlx_hook(mlx_win_list_t *win_ptr, int x_event, int x_mask, int (*funct_ptr)(), void *param)
 {
   [(id)(win_ptr->winid) setEvent:x_event andFunc:funct_ptr andParam:param];
 }
 
-int     mlx_do_key_autorepeatoff(t_mlx_ptr_t *mlx_ptr)
+int     mlx_do_key_autorepeatoff(mlx_ptr_t *mlx_ptr)
 {
-  t_mlx_win_list_t *win;
+  mlx_win_list_t *win;
 
   win = mlx_ptr->win_list;
   while (win)
@@ -707,9 +706,9 @@ int     mlx_do_key_autorepeatoff(t_mlx_ptr_t *mlx_ptr)
   return (0);
 }
 
-int     mlx_do_key_autorepeaton(t_mlx_ptr_t *mlx_ptr)
+int     mlx_do_key_autorepeaton(mlx_ptr_t *mlx_ptr)
 {
-  t_mlx_win_list_t *win;
+  mlx_win_list_t *win;
 
   win = mlx_ptr->win_list;
   while (win)
@@ -721,12 +720,12 @@ int     mlx_do_key_autorepeaton(t_mlx_ptr_t *mlx_ptr)
 }
 
 
-int     mlx_destroy_window(t_mlx_ptr_t *mlx_ptr, t_mlx_win_list_t *win_to_del)
+int     mlx_destroy_window(mlx_ptr_t *mlx_ptr, mlx_win_list_t *win_to_del)
 {
-  t_mlx_win_list_t    first;
-  t_mlx_win_list_t    *win;
-  t_mlx_img_ctx_t	    *ctx;
-  t_mlx_img_ctx_t	    *ctx2;
+  mlx_win_list_t    first;
+  mlx_win_list_t    *win;
+  mlx_img_ctx_t	    *ctx;
+  mlx_img_ctx_t	    *ctx2;
 
   first.next = mlx_ptr->win_list;
   win = &first;
