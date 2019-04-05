@@ -6,7 +6,7 @@
 /*   By: viwade <viwade@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 23:37:46 by viwade            #+#    #+#             */
-/*   Updated: 2019/04/05 00:06:11 by viwade           ###   ########.fr       */
+/*   Updated: 2019/04/05 00:13:01 by viwade           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ struct	s_mlx_win_list
 	t_mlx_win_list_t	*next;
 };
 
-struct		s_mlx_ptr
+struct	s_mlx_ptr
 {
 	void				*appid;
 	t_mlx_win_list_t	*win_list;
@@ -112,21 +112,14 @@ struct		s_mlx_ptr
 **	 proto
 */
 
-int
-mlx_shaders(t_glsl_info_t *glsl);
-char
-**mlx_int_str_to_wordtab(char *str);
-int
-mlx_int_str_str(char *str, char *find, int len);
-int
-mlx_int_str_str_cote(char *str, char *find, int len);
-int
-mlx_destroy_image(t_mlx_ptr_t *mlx_ptr, t_mlx_img_list_t *img_ptr);
-void
-*mlx_new_image();
-void
-*mlx_xpm_to_image(t_mlx_ptr_t *xvar, char **xpm_data, int *width, int *height);
-int
-mlx_do_sync(t_mlx_ptr_t *mlx_ptr);
+int		mlx_shaders(t_glsl_info_t *glsl);
+char	**mlx_int_str_to_wordtab(char *str);
+int		mlx_int_str_str(char *str, char *find, int len);
+int		mlx_int_str_str_cote(char *str, char *find, int len);
+int		mlx_destroy_image(t_mlx_ptr_t *mlx_ptr, t_mlx_img_list_t *img_ptr);
+void	*mlx_new_image();
+void	*mlx_xpm_to_image(t_mlx_ptr_t *xvar, char **xpm_data, int *width,
+			int *height);
+int		mlx_do_sync(t_mlx_ptr_t *mlx_ptr);
 
 #endif
