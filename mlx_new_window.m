@@ -3,6 +3,7 @@
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/gl3.h>
 #import <AppKit/NSOpenGLView.h>
+#import <Foundation/Foundation.h>
 
 #include <stdio.h>
 
