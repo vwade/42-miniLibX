@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_int.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: viwade <viwade@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/04 23:37:46 by viwade            #+#    #+#             */
+/*   Updated: 2019/04/04 23:37:50 by viwade           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 //
 // mlx_int.h for minilibx
 //
@@ -6,10 +18,12 @@
 // include opengl needed before mlx_int.h
 //
 
-
-#define	MAX_EVENT	32
-#define MAX_PIXEL_NB	200000
-#define UNIQ_BPP	4
+#ifndef MLX_INT_H
+# define MLX_INT_H
+# include <OpenGL/gl3.h>
+# define MAX_EVENT	32
+# define MAX_PIXEL_NB	200000
+# define UNIQ_BPP	4
 
 #define FONT_WIDTH	10
 #define	FONT_HEIGHT	20
@@ -100,3 +114,5 @@ int	mlx_destroy_image(mlx_ptr_t *mlx_ptr, mlx_img_list_t *img_ptr);
 void	*mlx_new_image();
 void    *mlx_xpm_to_image(mlx_ptr_t *xvar,char **xpm_data,int *width,int *height);
 int	mlx_do_sync(mlx_ptr_t *mlx_ptr);
+
+#endif
