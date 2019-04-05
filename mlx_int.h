@@ -6,7 +6,7 @@
 /*   By: viwade <viwade@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 23:37:46 by viwade            #+#    #+#             */
-/*   Updated: 2019/04/04 23:37:50 by viwade           ###   ########.fr       */
+/*   Updated: 2019/04/04 23:48:05 by viwade           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,20 @@
 # define MAX_PIXEL_NB	200000
 # define UNIQ_BPP	4
 
-#define FONT_WIDTH	10
-#define	FONT_HEIGHT	20
+# define FONT_WIDTH	10
+# define FONT_HEIGHT	20
 
 
-typedef int (*func_t)();
+typedef int	(*t_func_t)();
+typedef struct s_glsl_info	t_glsl_info_t;
+typedef struct s_mlx_img_list	t_mlx_img_list_t;
+typedef struct s_mlx_img_ctx	t_mlx_img_ctx_t;
+typedef struct s_mlx_win_list	t_mlx_win_list_t;
+typedef struct s_mlx_ptr	t_mlx_ptr_t;
 
 /* structs */
 
-typedef struct	glsl_info_s
+struct	s_glsl_info
 {
   GLuint	pixel_vshader;
   GLuint	pixel_fshader;
@@ -61,58 +66,55 @@ typedef struct	glsl_info_s
   GLint		loc_font_posinwin;
   GLint		loc_font_posinatlas;
   GLint		loc_font_atlassize;
-} glsl_info_t;
+};
 
-
-typedef struct	mlx_img_list_s
+struct	s_mlx_img_list
 {
   int			width;
   int			height;
   char			*buffer;
   GLfloat		vertexes[8];
-  struct mlx_img_list_s	*next;
-} mlx_img_list_t;
+  struct s_mlx_img_list	*next;
+};
 
-
-typedef struct	mlx_img_ctx_s
+struct	s_mlx_img_ctx
 {
   GLuint		texture;
   GLuint		vbuffer;
-  mlx_img_list_t	*img;
-  struct mlx_img_ctx_s	*next;
-} mlx_img_ctx_t;
+  t_mlx_img_list_t	*img;
+  struct s_mlx_img_ctx	*next;
+};
 
-typedef struct	mlx_win_list_s
+struct	s_mlx_win_list
 {
   void			*winid;
-  mlx_img_ctx_t		*img_list;
+  t_mlx_img_ctx_t		*img_list;
   int			nb_flush;
   int			pixmgt;
-  struct mlx_win_list_s	*next;
-} mlx_win_list_t;
+  struct s_mlx_win_list	*next;
+};
 
-
-typedef struct		mlx_ptr_s
+struct		s_mlx_ptr
 {
   void			*appid;
-  mlx_win_list_t	*win_list;
-  mlx_img_list_t	*img_list;
+  t_mlx_win_list_t	*win_list;
+  t_mlx_img_list_t	*img_list;
   void			(*loop_hook)(void *);
   void			*loop_hook_data;
   void			*loop_timer;
-  mlx_img_list_t	*font;
+  t_mlx_img_list_t	*font;
   int			main_loop_active;
-} mlx_ptr_t;
+};
 
 // proto
 
-int	mlx_shaders(glsl_info_t *glsl);
+int	mlx_shaders(t_glsl_info_t *glsl);
 char    **mlx_int_str_to_wordtab(char *str);
 int     mlx_int_str_str(char *str,char *find,int len);
 int     mlx_int_str_str_cote(char *str,char *find,int len);
-int	mlx_destroy_image(mlx_ptr_t *mlx_ptr, mlx_img_list_t *img_ptr);
+int	mlx_destroy_image(t_mlx_ptr_t *mlx_ptr, t_mlx_img_list_t *img_ptr);
 void	*mlx_new_image();
-void    *mlx_xpm_to_image(mlx_ptr_t *xvar,char **xpm_data,int *width,int *height);
-int	mlx_do_sync(mlx_ptr_t *mlx_ptr);
+void    *mlx_xpm_to_image(t_mlx_ptr_t *xvar,char **xpm_data,int *width,int *height);
+int	mlx_do_sync(t_mlx_ptr_t *mlx_ptr);
 
 #endif
