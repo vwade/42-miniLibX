@@ -6,7 +6,7 @@
 /*   By: viwade <viwade@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 23:37:46 by viwade            #+#    #+#             */
-/*   Updated: 2019/04/05 00:18:08 by viwade           ###   ########.fr       */
+/*   Updated: 2019/04/05 11:46:39 by viwade           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #ifndef MLX_INT_H
 # define MLX_INT_H
 # include <OpenGL/gl3.h>
+# include "mlx.h"
 # define MAX_EVENT	32
 # define MAX_PIXEL_NB	200000
 # define UNIQ_BPP	4
@@ -113,6 +114,7 @@ struct	s_mlx_ptr
 */
 
 int		mlx_shaders(t_glsl_info_t *glsl);
+int		mlx_shaders_font(t_glsl_info_t *glsl);
 char	**mlx_int_str_to_wordtab(char *str);
 int		mlx_int_str_str(char *str, char *find, int len);
 int		mlx_int_str_str_cote(char *str, char *find, int len);

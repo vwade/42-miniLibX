@@ -6,7 +6,7 @@
 /*   By: viwade <viwade@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 21:10:39 by viwade            #+#    #+#             */
-/*   Updated: 2019/04/02 23:08:18 by viwade           ###   ########.fr       */
+/*   Updated: 2019/04/05 02:03:54 by viwade           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 
 #ifndef MLX_H
 # define MLX_H
+# include "../libft/libft.h"
 
 void
 *mlx_init();
